@@ -2,7 +2,7 @@ function app() {
     
     var canvas = document.getElementById("lienzo");
 
-    canvas.setAttribute("width", 800);
+    canvas.setAttribute("width", 750);
     canvas.setAttribute("height", 500);
 
     
@@ -25,8 +25,8 @@ function app() {
         casilla: 0,
         ganador: 0,
         img: new Image(),
-        imgAvatarGato: new Image(),
-        imgAvatarRaton: new Image(),
+        imgGatoPlayer: new Image(),
+        imgRatonPlayer: new Image(),
         regilla: function () {
             var rejaA = 100;
 
@@ -77,8 +77,8 @@ function app() {
             var coordenadas = document.getElementById("coordenadas");
             coordenadas.innerHTML = "coordenadas:  X: " + x + " Y: " + y;
 
-            context.drawImage(gato.imgAvatarGato, 670, 120, 70, 70);
-            context.drawImage(gato.imgAvatarRaton, 670, 200, 70, 60);
+            context.drawImage(gato.imgGatoPlayer, 670, 120, 70, 70); 
+            context.drawImage(gato.imgRatonPlayer, 670, 200, 70, 60);
 
             let impImg = (x, y) => {
                 context.drawImage(gato.img, x, y, 95, 95);
@@ -210,96 +210,100 @@ function app() {
                         break;
                 }                
                 context.fillStyle = "#92FAC1"
-                context.fillRect(625, 303, 70, 30);
+                context.fillRect(610, 303, 70, 30);
                 context.fillStyle = "#960DF0"
-                context.font = "bold 22px sans-serif";
+                context.font = "bold 24px Helvetica";
 
                 if (gato.turno == 0) {
                     gato.img.src = "./Jerry.jpg";
                     gato.turno = 1;
-                    context.fillText("Ratón", 624, 323);
+                    context.fillText("Ratón", 610, 323);
                 }
                 else {
                     gato.img.src = "./Tom.png";
                     gato.turno = 0;
-                    context.fillText("Gato", 629, 323);
+                    context.fillText("Gato", 610, 323);
                 }
                 gato.definirGanador();
             }
         },
-        tarjetaDatos: function () {
+        Tablero: function () 
+        {
 
             context.fillStyle = "#861EDF"
             context.fillRect(500, 0, 300, 500);
 
             context.fillStyle = "black"
-            context.font = "bold 25px sans-serif";
+            context.font = " bold 20px Rockwell";
 
+            context.fillText("Jugadores", 590, 100);
+            context.fillText("Gato:",  580, 170);
+            context.fillText("Ratón:", 580, 240);
 
-            context.fillStyle = "black"
-            context.font = "15px fantasy";
-
-            context.fillText("Jugadores", 610, 100);
-            context.fillText("Gato:", 600, 170);
-            context.fillText("Ratón:", 600, 240);
-
-            context.fillText("Turno:", 630, 300);
+            context.fillText("Turno:", 600, 300);
 
             context.fillStyle = "black"
-            context.font = "bold 22px sans-serif";
-            context.fillText("Gato", 629, 323);
+            context.font = "bold 20px Rockwell";
+            context.fillText("Gato", 610, 323);
 
-            context.fillStyle = "#861EDF"
-            context.fillRect(570, 335, 180, 30);
+            context.fillStyle = "#918e9c"
+            context.fillRect(570, 335, 130, 30);
             context.fillStyle = "black"
-            context.font = "15px fantasy";
-            context.fillText("reiniciar", 630, 355);
+            context.font = "18px Rockwell";
+            context.fillText("Reiniciar", 600, 355);
 
         },
         definirGanador: function () {
 
-            let btnReiniciar = () => {
-                context.fillStyle = "green"
-                context.fillRect(580, 335, 140, 30);
+            let btnReiniciar = () => 
+            {
+                context.fillStyle = "#4287f5"
+                context.fillRect(570, 335, 130, 30);
                 context.fillStyle = "Black"
-                context.font = "15px fantasy";
-                context.fillText(">>>REINICIAR<<<", 593, 358);
+                context.font = "15px Rockwell";
+                context.fillText(">>REINICIAR<<", 570, 355);
 
                 canvas.removeEventListener("mousedown", gato.activarEstados, false);
             }
-            // funcion del Sweetalert
-/*             let alertGanador =()=>{
-                    "El ganador es: " + ganadorAlert
-            }; */
-            let ganadorGato = () => {
+
+            let ganadorGato = () => 
+            {
                 btnReiniciar();
                 gato.ganador = 1;
-                context.fillStyle = "#861EDF"
-                context.fillRect(677, 393, 20, 25);
-                context.fillStyle = "black"
-                context.font = "15px fantasy";
                 gato.img.src = "";
-/*                 ganadorAlert = "Gato"
-                alertGanador(); */
-                // aqui va la funcion del sweetAlert
+                Swal.fire(
+                    {
+                        imageUrl: 'TomWins.webp',
+                        imageHeight: 250,
+                        imageAlt: 'Imagen Tom',
+                        title: '>> GANÓ EL GATO <<',
+                    });
                 
             };
 
             let ganadorRaton = () => {
                 btnReiniciar();
                 gato.ganador = 2;
-                
-                context.fillStyle = "#861EDF"
-                context.fillRect(677, 413, 20, 25);
-                context.fillStyle = "black"
-                context.font = "15px Fantasy";
                 gato.img.src = "";
+                Swal.fire(
+                    {
+                        imageUrl: 'JerryWins.jpg',
+                        imageHeight: 250,
+                        imageAlt: 'Imagen Jerry',
+                        title: '>> GANO EL RATON  <<',
+                    });
             }
 
             let empate =()=>
             {
                 btnReiniciar();
-                gato.ganador = 3;
+                Swal.fire(
+                    {
+                        imageUrl: 'Empate.jpg',
+                        imageHeight: 250,
+                        imageAlt: 'Imagen Empate',
+                        title: '>> FUE UN EMPATE  <<',
+                    });
             }
             
             if (gato.estados[0][0] == 1 & gato.estados[0][1] == 1 & gato.estados[0][2] == 1) {
@@ -320,49 +324,149 @@ function app() {
                 context.stroke();
             }
 
-            else if (gato.estados[1][0] == 1 & gato.estados[1][1] == 1 & gato.estados[1][2] == 1) {
+            else if (gato.estados[1][0] == 1 & gato.estados[1][1] == 1 & gato.estados[1][2] == 1)
+             {
                 ganadorGato();
-            } else if (gato.estados[1][0] == 2 & gato.estados[1][1] == 2 & gato.estados[1][2] == 2) {
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(141,249);
+                context.lineTo(355,250);
+                context.stroke();
+            } else if (gato.estados[1][0] == 2 & gato.estados[1][1] == 2 & gato.estados[1][2] == 2) 
+            {
                 ganadorRaton();
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(141,249);
+                context.lineTo(355,250);
+                context.stroke();
             }
-            if (gato.estados[2][0] == 1 & gato.estados[2][1] == 1 & gato.estados[2][2] == 1) {
+            if (gato.estados[2][0] == 1 & gato.estados[2][1] == 1 & gato.estados[2][2] == 1) 
+            {
                  ganadorGato();
-            } else if (gato.estados[2][0] == 2 & gato.estados[2][1] == 2 & gato.estados[2][2] == 2) {
+                 context.strokeStyle = "red";
+                 context.lineWidth = 5;
+                 context.beginPath();
+                 context.moveTo(141,347);
+                 context.lineTo(355,348);
+                 context.stroke();
+            } else if (gato.estados[2][0] == 2 & gato.estados[2][1] == 2 & gato.estados[2][2] == 2) 
+            {
                 ganadorRaton();
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(141,347);
+                context.lineTo(355,348);
+                context.stroke();
             }
 
-            else if (gato.estados[0][0] == 1 & gato.estados[1][0] == 1 & gato.estados[2][0] == 1) {
+            else if (gato.estados[0][0] == 1 & gato.estados[1][0] == 1 & gato.estados[2][0] == 1)
+             {
                 ganadorGato();
-            } else if (gato.estados[0][0] == 2 & gato.estados[1][0] == 2 & gato.estados[2][0] == 2) {
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(150,126);
+                context.lineTo(150,360);
+                context.stroke();
+            } else if (gato.estados[0][0] == 2 & gato.estados[1][0] == 2 & gato.estados[2][0] == 2) 
+            {
                 ganadorRaton();
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(150,126);
+                context.lineTo(150,360);
+                context.stroke();
             }
 
-            else if (gato.estados[0][1] == 1 & gato.estados[1][1] == 1 & gato.estados[2][1] == 1) {
+            else if (gato.estados[0][1] == 1 & gato.estados[1][1] == 1 & gato.estados[2][1] == 1) 
+            {
                 ganadorGato();
-            } else if (gato.estados[0][1] == 2 & gato.estados[1][1] == 2 & gato.estados[2][1] == 2) {
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(249,128);
+                context.lineTo(249,360);
+                context.stroke();
+            } else if (gato.estados[0][1] == 2 & gato.estados[1][1] == 2 & gato.estados[2][1] == 2) 
+            {
                 ganadorRaton();
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(249,128);
+                context.lineTo(249,360);
+                context.stroke();
             }
 
-            else if (gato.estados[0][2] == 1 & gato.estados[1][2] == 1 & gato.estados[2][2] == 1) {
+            else if (gato.estados[0][2] == 1 & gato.estados[1][2] == 1 & gato.estados[2][2] == 1) 
+            {
                 ganadorGato();
-            } else if (gato.estados[0][2] == 2 & gato.estados[1][2] == 2 & gato.estados[2][2] == 2) {
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(351,124);
+                context.lineTo(351,361);
+                context.stroke();
+            } else if (gato.estados[0][2] == 2 & gato.estados[1][2] == 2 & gato.estados[2][2] == 2) 
+            {
                 ganadorRaton();
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(351,124);
+                context.lineTo(351,361);
+                context.stroke();
             }
 
-            else if (gato.estados[0][0] == 1 & gato.estados[1][1] == 1 & gato.estados[2][2] == 1) {
+            else if (gato.estados[0][0] == 1 & gato.estados[1][1] == 1 & gato.estados[2][2] == 1) 
+            {
                 ganadorGato();
-            } else if (gato.estados[0][0] == 2 & gato.estados[1][1] == 2 & gato.estados[2][2] == 2) {
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(129,130);
+                context.lineTo(363,362);
+                context.stroke();
+
+            } else if (gato.estados[0][0] == 2 & gato.estados[1][1] == 2 & gato.estados[2][2] == 2) 
+            {
                 ganadorRaton();
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(129,130);
+                context.lineTo(363,362);
+                context.stroke();
+
             }
 
-            else if (gato.estados[0][2] == 1 & gato.estados[1][1] == 1 & gato.estados[2][0] == 1) {
+            else if (gato.estados[0][2] == 1 & gato.estados[1][1] == 1 & gato.estados[2][0] == 1)
+             {
                 ganadorGato();
-            } else if (gato.estados[0][2] == 2 & gato.estados[1][1] == 2 & gato.estados[2][0] == 2) {
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(365,135);
+                context.lineTo(127,364);
+                context.stroke();
+            } else if (gato.estados[0][2] == 2 & gato.estados[1][1] == 2 & gato.estados[2][0] == 2)
+            {
                 ganadorRaton();
-            }
-            if(gato.estados[0][0] != 0 & gato.estados[0][1] != 0 & gato.estados[0][2] != 0 &
-                gato.estados[1][0] != 0 & gato.estados[1][1] != 0 & gato.estados[1][2] != 0 &
-                gato.estados[2][0] != 0 & gato.estados[2][1] != 0 & gato.estados[2][2] != 0){
+                context.strokeStyle = "red";
+                context.lineWidth = 5;
+                context.beginPath();
+                context.moveTo(365,135);
+                context.lineTo(127,364);
+                context.stroke();
+            } else if(gato.estados[0][0] != 0 & gato.estados[0][1] != 0 & gato.estados[0][2] != 0 &
+                      gato.estados[1][0] != 0 & gato.estados[1][1] != 0 & gato.estados[1][2] != 0 &
+                      gato.estados[2][0] != 0 & gato.estados[2][1] != 0 & gato.estados[2][2] != 0)
+                {
                     empate();
 
                 }
@@ -396,14 +500,14 @@ function app() {
 
                 this.regilla();
             this.escenario();
-            this.tarjetaDatos();
+            this.Tablero();
             this.img.src = "./Tom.png";
-            this.imgAvatarGato.src = "./Tom.png";
-            this.imgAvatarRaton.src = "./Jerry.jpg";
+            this.imgGatoPlayer.src = "./Tom.png";
+            this.imgRatonPlayer.src = "./Jerry.jpg";
             this.ganador = 0;
             canvas.addEventListener("mousedown", gato.activarEstados, false);
-            context.drawImage(gato.imgAvatarGato, 670, 120, 70, 70);
-            context.drawImage(gato.imgAvatarRaton, 670, 200, 70, 60);
+            // context.drawImage(gato.imgGatoPlayer, 670, 120, 70, 70);
+           // context.drawImage(gato.imgRatonPlayer, 670, 200, 70, 60);
         }
     }
     canvas.addEventListener("mousemove", gato.seleccionar);
