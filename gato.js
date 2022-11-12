@@ -297,6 +297,7 @@ function app() {
             let empate =()=>
             {
                 btnReiniciar();
+                gato.ganador = 3;
                 Swal.fire(
                     {
                         imageUrl: 'Empate.jpg',
@@ -506,8 +507,7 @@ function app() {
             this.imgRatonPlayer.src = "./Jerry.jpg";
             this.ganador = 0;
             canvas.addEventListener("mousedown", gato.activarEstados, false);
-            // context.drawImage(gato.imgGatoPlayer, 670, 120, 70, 70);
-           // context.drawImage(gato.imgRatonPlayer, 670, 200, 70, 60);
+
         }
     }
     canvas.addEventListener("mousemove", gato.seleccionar);
